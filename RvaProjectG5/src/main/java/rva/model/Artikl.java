@@ -35,7 +35,7 @@ public class Artikl implements Serializable {
 	private String proizvodjac;
 
 	//bi-directional many-to-one association to StavkaPorudzbine
-	@OneToMany(mappedBy="artiklBean")
+	@OneToMany(mappedBy="artikl")
 	@JsonIgnore
 	private List<StavkaPorudzbine> stavkaPorudzbines;
 
@@ -76,14 +76,14 @@ public class Artikl implements Serializable {
 
 	public StavkaPorudzbine addStavkaPorudzbine(StavkaPorudzbine stavkaPorudzbine) {
 		getStavkaPorudzbines().add(stavkaPorudzbine);
-		stavkaPorudzbine.setArtiklBean(this);
+		stavkaPorudzbine.setArtikl(this);
 
 		return stavkaPorudzbine;
 	}
 
 	public StavkaPorudzbine removeStavkaPorudzbine(StavkaPorudzbine stavkaPorudzbine) {
 		getStavkaPorudzbines().remove(stavkaPorudzbine);
-		stavkaPorudzbine.setArtiklBean(null);
+		stavkaPorudzbine.setArtikl(null);
 
 		return stavkaPorudzbine;
 	}

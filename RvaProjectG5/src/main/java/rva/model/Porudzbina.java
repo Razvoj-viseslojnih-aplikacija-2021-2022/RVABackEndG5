@@ -1,10 +1,24 @@
 package rva.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
 /**
@@ -13,6 +27,7 @@ import java.util.List;
  */
 @Entity
 @NamedQuery(name="Porudzbina.findAll", query="SELECT p FROM Porudzbina p")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Porudzbina implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -34,10 +49,11 @@ public class Porudzbina implements Serializable {
 	//bi-directional many-to-one association to Dobavljac
 	@ManyToOne
 	@JoinColumn(name="dobavljac")
-	private Dobavljac dobavljacBean;
+	private Dobavljac dobavljac;
 
 	//bi-directional many-to-one association to StavkaPorudzbine
-	@OneToMany(mappedBy="porudzbinaBean")
+	@OneToMany(mappedBy="porudzbina")
+	@JsonIgnore
 	private List<StavkaPorudzbine> stavkaPorudzbines;
 
 	public Porudzbina() {
@@ -83,12 +99,12 @@ public class Porudzbina implements Serializable {
 		this.placeno = placeno;
 	}
 
-	public Dobavljac getDobavljacBean() {
-		return this.dobavljacBean;
+	public Dobavljac getDobavljac() {
+		return this.dobavljac;
 	}
 
-	public void setDobavljacBean(Dobavljac dobavljacBean) {
-		this.dobavljacBean = dobavljacBean;
+	public void setDobavljac(Dobavljac dobavljac) {
+		this.dobavljac = dobavljac;
 	}
 
 	public List<StavkaPorudzbine> getStavkaPorudzbines() {
@@ -101,14 +117,14 @@ public class Porudzbina implements Serializable {
 
 	public StavkaPorudzbine addStavkaPorudzbine(StavkaPorudzbine stavkaPorudzbine) {
 		getStavkaPorudzbines().add(stavkaPorudzbine);
-		stavkaPorudzbine.setPorudzbinaBean(this);
+		stavkaPorudzbine.setPorudzbina(this);
 
 		return stavkaPorudzbine;
 	}
 
 	public StavkaPorudzbine removeStavkaPorudzbine(StavkaPorudzbine stavkaPorudzbine) {
 		getStavkaPorudzbines().remove(stavkaPorudzbine);
-		stavkaPorudzbine.setPorudzbinaBean(null);
+		stavkaPorudzbine.setPorudzbina(null);
 
 		return stavkaPorudzbine;
 	}
